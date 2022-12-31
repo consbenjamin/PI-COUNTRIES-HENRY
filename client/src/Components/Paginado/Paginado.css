@@ -1,0 +1,60 @@
+.pagination {
+    display: flex;    
+    flex-direction: row;    
+    align-items: center;
+    justify-content:center;
+    list-style: none;
+}
+
+ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+ul.pagination li {display: inline;}
+
+button {
+    cursor: pointer;
+}
+
+ul.pagination li button.active {
+    color: white;
+}
+
+ul.pagination li button:hover:not(.active) {
+    
+    background-color: #ddd;
+    border-radius: 8px;
+}
+
+ul.pagination li button {
+    transition: background-color .4s;
+    margin: 4px 4px 2px 2px;
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid black;
+}
+
+.backnext1{
+    padding-top: 6px;
+    float: left;
+    background-color: transparent;
+    border: none;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.backnext2{
+    padding-top: 6px;
+    float: right;
+    background-color: transparent;
+    border: none;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    font-size: 20px;
+}

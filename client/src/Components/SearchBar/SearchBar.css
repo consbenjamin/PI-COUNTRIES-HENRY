@@ -1,0 +1,24 @@
+.buttonSearch {
+    cursor: pointer;
+    width: auto;    
+    border: 1px solid black;
+    background: none;
+    font-size: 18px;
+    margin: 10px;    
+}
+
+.buttonSearch:hover{
+    transform: scale(1.1);
+}
+
+.inputSearch{
+    background-color: white;
+    border: none;    
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: bold;    
+    width: 16%;
+    height: 28px;
+    padding-left: 10px;
+    text-align: center;    
+}

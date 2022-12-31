@@ -1,0 +1,31 @@
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.home {
+    background: #f1efef;
+    background-position: center; 
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: auto; 
+    position: absolute;
+}
+
+/* .navBg {
+    position: absolute;
+    background-color: #947533;
+    width: 100%;
+    height: 250px;
+} */
+
+.containerCountries {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    width: 100%;
+    gap: 40px;
+    margin: 50px auto 60px auto;
+    justify-content: center;
+}

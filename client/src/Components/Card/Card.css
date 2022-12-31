@@ -1,0 +1,61 @@
+a{
+    text-decoration: none;
+}
+
+/* contenedor de la Card */
+.container {
+    display: flex;
+    width: 300px;
+    height: 400px;
+    background-color: white;
+    border-radius: 8px;
+
+    -webkit-box-shadow: 0px 0px 51px -18px rgb(48, 48, 48);
+    -moz-box-shadow: 0px 0px 51px -18px rgb(48, 48, 48);
+    box-shadow: 0px 0px 51px -18px rgb(48, 48, 48);
+}
+
+/* img de la Card */
+.imgCountry {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0px;
+    width: 300px;
+    height: 220px;
+    object-fit: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    transition: all ease-in-out .4s;
+}
+
+/* efecto de la img al hacer hover */
+.container:hover .imgCountry {
+    transform: scale(1.25) rotate(2deg);
+}
+
+/* wrapper de la img para que funcione bien el efecto */ 
+.wrapperImg {
+    overflow: hidden;
+}
+
+/* titulo tarjeta */
+.cardTitle {
+    color: #201616;
+    display: flex;
+    flex-wrap: nowrap;
+    margin-top: 20px;
+    font-size: 1.2em;
+    font-weight: 800;
+    width: 180px;
+    margin-left: 25px;
+}
+
+/* subtitulo peso */
+.cardSub {
+    display: flex;
+    justify-content: left;
+    color: gray;
+    margin-left: 25px;
+    margin-top: -10px;
+}
