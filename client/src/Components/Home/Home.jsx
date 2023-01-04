@@ -10,7 +10,7 @@ import SearchBar from '../SearchBar/SearchBar';
 
 export default function Home () {
     const dispatch = useDispatch() //para despachar las acciones con la constante
-    const allCountries = useSelector((state) => state.countries)
+    const allCountries = useSelector((state) => state.countries) //equivalente a mapStateToProps
 
     //paginado
     const [currentPage, setCurrentPage] = useState(1);
@@ -34,7 +34,7 @@ export default function Home () {
     //HANDLERS
 
     function handleClick(el){
-        el.preventDefault();
+        el.preventDefault(); //evita que se me recargue la pagina inecesariamente y que se vuelvan a cargar los estados de redux
         dispatch(getCountries());
         setCurrentPage(1);
     }
@@ -53,7 +53,7 @@ export default function Home () {
         el.preventDefault();
         dispatch(orderByName(el.target.value))
         setCurrentPage(1);//seteo para que la pagina default arranque en 1
-        setOrder(`Sort ${el.target.value}`); // para que cuando setea la pagina mododifique el estado local y se renderize
+        setOrder(`Sort ${el.target.value}`); // para que cuando setea la pagina modifique el estado local y se renderize
     }
 
     function handleSortPopulation(el) {
@@ -71,7 +71,7 @@ export default function Home () {
     return (
         <div className='home'>
             <div className='navBg'>
-                <h1>HENRY COUNTRIES</h1>
+                <h1>HENRY COUNTRIES🌎</h1>
                 <div className='filterOrder'>
                     <select onChange={el => handleSortName(el)}>
                         <option disabled selected>Order Alphabetically</option>
@@ -87,7 +87,7 @@ export default function Home () {
                         <option disabled selected>Filter by Activity</option>
                         <option value='all'>All</option>
                         <option value='act'>Activities</option>
-                        <option value='noA'> No Activities</option>
+                        <option value='noA'>No Activities</option>
                     </select>
                     <select onChange={el => handleFilterContinents(el)}>
                         <option disabled selected>Filter by Continent</option>
@@ -103,22 +103,22 @@ export default function Home () {
                     <button className='clearFilter' onClick={handleClear}>Clear Filter</button>
                     <div className='createActivity'>
                         <Link to='/activities'>
-                            <button>Create Activity</button>
+                            <button className='creatorButton default'>Create Activity</button>
                         </Link>
                     </div>
                 </div>
-            </div>
                 <div className='rightNav'>
                     <div className='search'>
                     </div>
                 </div>
-            <Paginado
-            countriesPerPage={countriesPerPage}
-            allCountries={allCountries.length}
-            paginado={paginado}
-            currentPage={currentPage}
-            />
-            <SearchBar handleClick={handleClick}/>
+                <Paginado
+                countriesPerPage={countriesPerPage}
+                allCountries={allCountries.length}
+                paginado={paginado}
+                currentPage={currentPage}
+                />
+                <SearchBar handleClick={handleClick}/>
+            </div>
             <div className='containerCountries'>
                 {currentCountries?.map((el) => {
                     return (

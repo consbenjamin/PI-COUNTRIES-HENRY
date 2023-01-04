@@ -31,12 +31,13 @@ export default function rootReducer (state = initialState, action) {
 
         case 'FILTER_BY_ACTIVITY':
             const countries = state.countries
-            const activityFiltered = action.payload === 'act' ? countries.filter(el => el.activities.length!== 0)
+            const activityFiltered = action.payload === 'act' ? countries.filter(el => el.activities.length !== 0)
             : action.payload === 'noA' ? countries.filter(el => !el.activities.length) : countries
             return {
                 ...state,
                 countries: activityFiltered
             };
+
             
         case 'ORDER_BY_NAME':
             let sortedArr = action.payload === 'asc' ?
@@ -91,10 +92,7 @@ export default function rootReducer (state = initialState, action) {
                 ...state,
                 detail: action.payload
             };
-        default:
-            return {
-                ...state
-            };
+        default: return state;
     }
 };
 

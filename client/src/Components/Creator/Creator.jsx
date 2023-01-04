@@ -6,139 +6,125 @@ import './Creator.css';
 import { Link, useHistory } from 'react-router-dom';
 
 
-//validador de errores de los inputs
-
-function validate(input) {
-    const errors = {};
-
-    if (!input.name) errors.name = 'Name is a required field!';
-    if (input.name.length > 20) errors.name = 'Name must be under 20 characters.';
-    if (input.name.length < 3) errors.name = 'Name must be greater than 3 characters';
-
-    if (!input.duration) errors.duration = 'Duration is a required field!';
-    else if (input.duration <= 0 || input.duration > 24) errors.duration = 'Duration must be between 1 and 24 hours';
-
-    if (!input.season) errors.season = 'Please, select a season';
-
-    if (!input.countriesName) errors.countriesName = 'Please, select a country';
-
-    if (!input.difficulty) errors.difficulty = 'Please, select a difficulty';
-    
-    return errors;
-};
-
-export default function Creator() {
-    const dispatch = useDispatch();
-    const history = useHistory();
-    const countries = useSelector((state) => state.countries);
-
-    const [errors, setErrors] = useState({});
-
+export default function Creator(){
+    const dispatch = useDispatch()
+    const Countries = useSelector((state)=> state.countries)
+    const history = useHistory()
+    const [errors, setErrors] = useState({})
     const [input, setInput] = useState({
         name:"",
-        difficulty:0,
-        duration:0,
+        difficulty:"",
+        duration:"",
         season:"",
         countriesName:[]
-    });
-
-    useEffect(() => {   //un hook que es llamado, cuando el componente ya esta montado
+    })
+    useEffect(()=> {    // Como siempre, un hook que es llamado, cuando el componente ya es montado
         dispatch(getCountries())
     },[dispatch]);
+    
+    function validate(input){
+        let errors={};
+        if (!input.name) errors.name ='Name is a required field!';
+        
+        if (input.name.length > 20) errors.name = 'Name must be under 20 characters.';
+        if (input.name.length < 3) errors.name = 'Name must be greater than 3 characters';
+        
+        if (!input.duration) errors.duration = 'Duration is a required field!';
+        
+        if (input.duration <= 0 || input.duration > 24) errors.duration = 'Duration must be between 1 and 24 hours';
+        
+        if (!input.season) errors.season = 'Please, select a season';
+        
+        if (!input.difficulty) errors.difficulty = 'Please, select a difficulty';
 
-/////////////////////////////////////////////HANDLERS//////////////////////////////////////////////////////////////////////
-
-    function handleChange (el) {
+        if (!input.countriesName.length) errors.countriesName = 'Please, select a country';
+        
+        return errors
+    }
+    
+    function handleChange(e){
         setInput({
             ...input,
-            [el.target.name] : el.target.value
+            [e.target.name]: e.target.value
         })
         setErrors(validate({
             ...input,
-            [el.target.name] : el.target.value
+            [e.target.name]: e.target.value
         }))
-    };
-
-    function handleSelect (el) {
+    }
+    function handleCountrySelect(e){
+        if(input.countriesName.includes(e.target.value)) //Si mi estado local input.countriesName... incluye el value, retorna una alerta
+        return alert("Ya seleccionaste este pais")
+        const index = Countries.findIndex(object => {
+            return object.name === e.target.value
+        })
+        if (index > -1){
+            Countries.splice(index, 1)
+        }
         setInput({
             ...input,
-            [el.target.name] : el.target.value
+            countriesName: [...input.countriesName, e.target.value]
         })
         setErrors(validate({
             ...input,
-            [el.target.name] : el.target.value
+            [e.target.name]: e.target.value
         }))
-    };
-
-    function handleCountrySelect (el) {
-        if(input.countriesName.includes(el.target.value)) //si mi estado local input.countriesName incluye el value, retorna una alerta
-        return alert('Country already selected');
-
-        // const index = countries.findIndex(el => {
-        //     return el.name === el.target.value
-        // })
-        // if (index > -1){
-        //     countries.splice(index, 1);
-        // }
+    }
+    function handleSelect(e){
         setInput({
             ...input,
-            countriesName: [...input.countriesName, el.target.value]
+            [e.target.name]: e.target.value
         })
         setErrors(validate({
             ...input,
-            [el.target.name] : el.target.value
+            [e.target.name]: e.target.value
         }))
-    };
-
-    function handleDelete (e) {
+    }
+    function handleDelete(e){
         setInput({
             ...input,
             countriesName: input.countriesName.filter(f=>f!==e)
         })
-        countries.push(e)
+        Countries.push(e)
         console.log(e)
     }
-
-    function handleSubmit (el) {
-        el.preventDefault();
+    function handleSubmit(e){
+        e.preventDefault();
         dispatch(postActivities(input))
-        alert('Activity created succesfully!')
+        alert("Activity created!")
         console.log(input)
         setInput({
-            name:"",                                                        
-            difficulty:0,
-            duration:0,
+            name:"",
+            difficulty:"",
+            duration:"",
             season:"",
             countriesName:[]
         })
         history.push('/home')
     };
 
-    console.log(input)
-    
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
         <div className='creator'>
             <div className='nav'>
-                <Link to ='/home'><button className='buttonBack'>Volver</button></Link>
+                <Link to ='/home'><button className='buttonBack'>Return</button></Link>
             </div>
             <div className='creatorAll'>
                 <div className='creatorMenu'>
-                    <h1 className='creatorTitle'>Create Activity</h1>
+                    <h1 className='creatorTitle'>Create Activity✈️</h1>
                     <div className='allFields'>
                         <form onSubmit={(el) => handleSubmit(el)}>
                             <div className='areaInicio'>
                                 <div className='wrapperDual'>
-                                    <label>Name:</label>
-                                    <input className='createField' type='text' value={input.name} name='name' placeholder='Name' onChange={(el) => handleChange(el)}/>
-                                    <div>{ input.name === '' ? <p className='errors'>*Obligatory Field</p> :
-                                        <p className='errors'>{errors.name}</p>
-                                    }</div>
+                                    <label>Activity:</label>
+                                    <input className='createField' type='text' value={input.name} name='name' placeholder='Name' onChange={handleChange}/>
+                                    {errors.name&&(
+                                        <p className="errors">{errors.name}</p>
+                                    )}
                                 </div>
                                 <div className='wrapperDual'>
                                     <label>Difficulty:</label>
-                                    <select name='difficulty' onChange={el => handleSelect(el)}>
+                                    <select className='selectCreator' defaultValue={'default'} name='difficulty' onChange={e=>handleSelect(e)}>
                                         <option value='default' disabled selected>Difficulty</option>
                                         <option value='1'>1</option>
                                         <option value='2'>2</option>
@@ -154,14 +140,14 @@ export default function Creator() {
                                 </div>
                                 <div className='wrapperDual'>
                                     <label>Duration in hours (Max:24):</label>
-                                    <input className='createField' type='number' value={input.duration} name='duration' placeholder='Duration' onChange={(el) => handleChange(el)}/>
+                                    <input className='createField' type='number' value={input.duration} name='duration' placeholder='Duration' onChange={handleChange}/>
                                     {errors.duration &&(
                                         <p className='errors'>{errors.duration}</p>
                                     )}
                                 </div>
                                 <div className='wrapperDual'>
                                     <label>Season:</label>
-                                    <select name='season' onChange={el => handleSelect(el)}>
+                                    <select className='selectCreator' defaultValue={'default'} name='season' onChange={e=>handleSelect(e)}>
                                         <option value='default' disabled selected>Season</option>
                                         <option value='summer'>Summer</option>
                                         <option value='winter'>Winter</option>
@@ -175,14 +161,17 @@ export default function Creator() {
                                 </div>
                                 <div className='wrapperDual'>
                                     <label>Country:</label>
-                                    <select name='countriesName' onChange={el => handleCountrySelect(el)}>
+                                    <select className='selectCreator' defaultValue={'default'} name='countriesName' onChange={e=>handleCountrySelect(e)}>
                                         <option value='default' disabled selected>Select a Country:</option>
-                                        {countries.map(el=> {
+                                        {Countries.map(c=> {
                                             return (
-                                                <option value={el.name}>{el.name}</option>
+                                                <option value={c.name}>{c.name}</option>
                                             )
                                         })}
                                     </select>
+                                    {errors.countriesName&&(
+                                        <p className='errors'>{errors.countriesName}</p>
+                                    )}
                                 </div>
                             </div>
                             { //VALIDACION DE ESTADO PARA HABILITAR BOTON
@@ -192,7 +181,7 @@ export default function Creator() {
                                 ||!input.countriesName.length
                                 ?                        
                             <button disabled className='button_block'>
-                                <span> Errores en el Formulario </span>
+                                <span> The form contains errors. </span>
                             </button>
                             :
                             <button onClick={el=>handleSubmit(el)} className='createButton' type="submit">Create Activity</button>
@@ -201,7 +190,7 @@ export default function Creator() {
                         {input.countriesName.map(c=> 
                             <div className="form">
                                 <p>{c}
-                                <button className="boton" onClick={()=>handleDelete(c)}>X</button> 
+                                <button className="buttonX" onClick={()=>handleDelete(c)}>X</button> 
                                 </p>
                             </div>
                         )}
@@ -212,3 +201,126 @@ export default function Creator() {
     )
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+//validador de errores de los inputs
+
+// function validate(input) {
+//     const errors = {};
+
+//     if (!input.name) errors.name = 'Name is a required field!';
+//     if (input.name.length > 20) errors.name = 'Name must be under 20 characters.';
+//     if (input.name.length < 3) errors.name = 'Name must be greater than 3 characters';
+
+//     if (!input.duration) errors.duration = 'Duration is a required field!';
+//     else if (input.duration <= 0 || input.duration > 24) errors.duration = 'Duration must be between 1 and 24 hours';
+
+//     if (!input.season) errors.season = 'Please, select a season';
+
+//     if (!input.countriesName) errors.countriesName = 'Please, select a country';
+
+//     if (!input.difficulty) errors.difficulty = 'Please, select a difficulty';
+    
+//     return errors;
+// };
+
+// export default function Creator() {
+//     const dispatch = useDispatch();
+//     const history = useHistory();
+//     const countries = useSelector((state) => state.countries);
+
+//     const [errors, setErrors] = useState({});
+
+//     const [input, setInput] = useState({
+//         name:"",
+//         difficulty:"",
+//         duration:"",
+//         season:"",
+//         countriesName:[]
+//     });
+
+//     useEffect(() => {   //un hook que es llamado, cuando el componente ya esta montado
+//         dispatch(getCountries())
+//     },[dispatch]);
+
+// /////////////////////////////////////////////HANDLERS//////////////////////////////////////////////////////////////////////
+
+//     function handleChange (el) {
+//         setInput({
+//             ...input,
+//             [el.target.name] : el.target.value
+//         })
+//         setErrors(validate({
+//             ...input,
+//             [el.target.name] : el.target.value
+//         }))
+//     };
+
+//     function handleSelect (el) {
+//         setInput({
+//             ...input,
+//             [el.target.name] : el.target.value
+//         })
+//         setErrors(validate({
+//             ...input,
+//             [el.target.name] : el.target.value
+//         }))
+//     };
+
+//     function handleCountrySelect (el) {
+//         if(input.countriesName.includes(el.target.value)) //si mi estado local input.countriesName incluye el value, retorna una alerta
+//         return alert('Country already selected');
+
+//         // const index = countries.findIndex(el => {
+//         //     return el.name === el.target.value
+//         // })
+//         // if (index > -1){
+//         //     countries.splice(index, 1);
+//         // }
+//         setInput({
+//             ...input,
+//             countriesName: [...input.countriesName, el.target.value]
+//         })
+//         setErrors(validate({
+//             ...input,
+//             [el.target.name] : el.target.value
+//         }))
+//     };
+
+//     function handleDelete (e) {
+//         setInput({
+//             ...input,
+//             countriesName: input.countriesName.filter(f=>f!==e)
+//         })
+//         countries.push(e)
+//         console.log(e)
+//     }
+
+//     function handleSubmit (el) {
+//         el.preventDefault();
+//         dispatch(postActivities(input))
+//         alert('Activity created succesfully!')
+//         console.log(input)
+//         setInput({
+//             name:"",                                                        
+//             difficulty:"",
+//             duration:"",
+//             season:"",
+//             countriesName:[]
+//         })
+//         history.push('/home')
+//     };
+
+//     console.log(input)
+    
+// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

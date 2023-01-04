@@ -9,12 +9,23 @@ module.exports = sequelize => {
         },
         difficulty:{
             type: DataTypes.INTEGER,
+            allowNull: false,
+            validate : {
+                min: 1,
+                max: 5,
+            }
         },
         duration:{
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                min: 1,
+                max: 24,
+            }   
         },
         season:{
-            type: DataTypes.ENUM('Summer', 'Autumn', 'Winter', 'Spring'),
+            type: DataTypes.ENUM('summer', 'autumn', 'winter', 'spring'),
+            allowNull: false,
         },
         createdInDb:{
             type: DataTypes.BOOLEAN,
