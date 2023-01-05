@@ -17,7 +17,7 @@ const postActivity = async (req,res,) => {
             where:{ 
                 name:{
                 [Op.in]:countriesName
-            }  
+            }
         }});
         infoCountriesName?.map(el => el.addActivity(createdActivity))
         if(createdActivity)res.json({message: "Se creo correctamente la Actividad", data: createdActivity})
@@ -30,3 +30,20 @@ const postActivity = async (req,res,) => {
 
 module.exports = { postActivity }
 
+
+
+
+
+
+
+
+
+// , include:[{
+//     model: Activity
+// }]  
+// });
+// console.log(infoCountriesName.activities)
+// for (let i = 0; i < infoCountriesName.length; i++) {
+//     if (infoCountriesName[i].activities.length > 1)
+//     console.log(infoCountriesName[i])
+// }
